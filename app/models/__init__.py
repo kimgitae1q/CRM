@@ -2,6 +2,7 @@ from app.models.catalog import Catalog, CatalogField, CatalogRecord
 from app.models.comment import Comment
 from app.models.company import Company, CompanyField, CompanyMember, Tag
 from app.models.federation import Federation, FederationMember
+from app.models.legal_entity import LegalEntity
 from app.models.project import Project, ProjectField, ProjectMember, ProjectStatus
 from app.models.reminder import Reminder
 from app.models.task import Task, task_tags
@@ -17,6 +18,7 @@ __all__ = [
     "CompanyMember",
     "Federation",
     "FederationMember",
+    "LegalEntity",
     "Project",
     "ProjectField",
     "ProjectMember",
