@@ -16,6 +16,11 @@ class CompanyRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
+    async def get_for_update(self, company_id: UUID) -> Company | None:
+        """Блокирует строку компании до завершения транзакции."""
+        query = select(Company).where(Company.id == company_id).with_for_update()
+        return await self.session.scalar(query)
+
     async def create(self, company: Company) -> Company:
         self.session.add(company)
         await self.session.flush()

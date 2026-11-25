@@ -16,6 +16,7 @@ from app.services.catalogs import CatalogService
 from app.services.comments import CommentService
 from app.services.companies import CompanyService
 from app.services.federations import FederationService
+from app.services.legal_entities import LegalEntityService
 from app.services.profile import ProfileService
 from app.services.projects import ProjectService
 from app.services.reminders import ReminderService
@@ -51,6 +52,12 @@ def get_company_service(
     session: AsyncSession = Depends(get_db_session),
 ) -> CompanyService:
     return CompanyService(session)
+
+
+def get_legal_entity_service(
+    session: AsyncSession = Depends(get_db_session),
+) -> LegalEntityService:
+    return LegalEntityService(session)
 
 
 def get_project_service(
