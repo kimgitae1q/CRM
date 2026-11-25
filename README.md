@@ -73,7 +73,6 @@ docker-compose up --build
 
 Делать миграции и прочие команды:
 - `docker-compose exec app alembic revision --autogenerate -m "describe change"`
-- `docker-compose exec app alembic upgrade head`
 - `docker-compose exec app pytest`
 
 ## Линтеры и pre-commit
