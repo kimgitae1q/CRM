@@ -1,0 +1,67 @@
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from app.api.deps import get_current_user
+from app.core.exceptions import NotFoundError
+from app.models.user import User
+from app.schemas.legal_entity import LegalEntityCreateRequest, LegalEntityResponse
+
+router = APIRouter(prefix="/legal_entities", tags=["legal_entities"])
+
+
+@router.get("/{legal_entity_id}", response_model=LegalEntityResponse)
+def get_legal_entity(
+    legal_entity_id: UUID,
+    _: User = Depends(get_current_user),
+    legal_entity_service: LegalEntityService = Depends(get_legal_entity_service),
+) -> LegalEntityResponse:
+    try:
+        legal_entity = legal_entity_service.get(legal_entity_id)
+    except NotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_not_foubd_error, detail="Юр лицо не найдено"
+        )
+    return LegalEntityResponse.model_validate(legal_entity)
+
+
+@router.get("", response_model=list[LegalEntityResponse])
+def get_legal_entities_by_company(
+    company_id: UUID,
+    _: User = Depends(get_current_user),
+    legal_entity_service: LegalEntityService = Depends(get_legal_entity_service),
+) -> list[LegalEntityResponse]:
+    try:
+        legal_entities = legal_entity_service.list_by_company(legal_entity_id)
+    except NotFoundError:
+        raise HTTPException(
+            status_code=status.HTTP_404_not_foubd_error, detail="Компания не найдена"
+        )
+    return [
+        LegalEntityResponse.model_validate(legal_entity)
+        for legal_entity in legal_entities
+    ]
+
+
+@router.post("", response_model=LegalEntityResponse)
+def create_legal_entity(
+    payload: LegalEntityCreateRequest,
+    legal_entity_id: UUID,
+    _: User = Depends(get_current_user),
+    legal_entity_service: LegalEntityService = Depends(get_legal_entity_service),
+) -> LegalEntityResponse:
+    legal_entity = legal_entity_service.create(
+        payload.name, company_id=payload.company_id
+    )
+    return LegalEntityResponse.model_validate(legal_entity)
+
+
+@router.patch("", response_model=LegalEntityResponse)
+def create_legal_entity(
+    payload: LegalEntityCreateRequest,
+    legal_entity_id: UUID,
+    _: User = Depends(get_current_user),
+    legal_entity_service: LegalEntityService = Depends(get_legal_entity_service),
+) -> LegalEntityResponse:
+    legal_entity = legal_entity_service.update(payload.name)
+    return LegalEntityResponse.model_validate(legal_entity)

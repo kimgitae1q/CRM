@@ -6,6 +6,7 @@ from app.api.routes import (
     comments,
     companies,
     federations,
+    legal_entities,
     profile,
     projects,
     reminders,
@@ -24,3 +25,4 @@ api_router.include_router(tasks.router)
 api_router.include_router(comments.router)
 api_router.include_router(reminders.router)
 api_router.include_router(catalogs.router)
+api_router.include_router(legal_entities.router)
