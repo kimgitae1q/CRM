@@ -9,6 +9,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
+if TYPE_CHECKING:
+    from app.models.catalog import Catalog
+    from app.models.federation import Federation
+    from app.models.legal_entity import LegalEntity
+    from app.models.project import Project, ProjectField
+    from app.models.user import User
+
 
 class Company(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __tablename__ = "companies"
@@ -31,6 +38,7 @@ class Company(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     fields: Mapped[list["CompanyField"]] = relationship(back_populates="company")
     projects: Mapped[list["Project"]] = relationship(back_populates="company")
     catalogs: Mapped[list["Catalog"]] = relationship(back_populates="company")
+    legal_entities: Mapped[list["LegalEntity"]] = relationship(back_populates="company")
 
     def __str__(self) -> str:
         return self.name
@@ -105,10 +113,3 @@ class CompanyField(UUIDPrimaryKeyMixin, TimestampMixin, Base):
             if hasattr(self, "company")
             else self.name
         )
-
-
-if TYPE_CHECKING:
-    from app.models.catalog import Catalog
-    from app.models.federation import Federation
-    from app.models.project import Project, ProjectField
-    from app.models.user import User
