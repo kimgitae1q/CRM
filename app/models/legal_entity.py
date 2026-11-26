@@ -4,6 +4,7 @@ from uuid import UUID
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.models.bank_account import BankAccount
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 if TYPE_CHECKING:
@@ -20,6 +21,9 @@ class LegalEntity(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     )
 
     company: Mapped["Company"] = relationship(back_populates="legal_entities")
+    bank_accounts: Mapped[list["BankAccount"]] = relationship(
+        back_populates="legal_entity"
+    )
 
     def __str__(self) -> str:
         return f"LegalEntity(name = {self.name}, company_id = {self.company_id})"

@@ -1,3 +1,4 @@
+from app.models.bank_account import BankAccount
 from app.models.catalog import Catalog, CatalogField, CatalogRecord
 from app.models.comment import Comment
 from app.models.company import Company, CompanyField, CompanyMember, Tag
@@ -28,4 +29,5 @@ __all__ = [
     "Task",
     "User",
     "task_tags",
+    "BankAccount",
 ]
