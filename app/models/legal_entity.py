@@ -4,15 +4,10 @@ from uuid import UUID
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.models.base import UUIDPrimaryKeyMixin, TimestampMixin, Base
+from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 if TYPE_CHECKING:
     from app.models.company import Company
-
-
-
-
-
 
 
 class LegalEntity(UUIDPrimaryKeyMixin, TimestampMixin, Base):
@@ -21,7 +16,7 @@ class LegalEntity(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     name: Mapped[str] = mapped_column(String(100))
 
     company_id: Mapped[UUID] = mapped_column(
-            ForeignKey("companies.id", ondelete="CASCADE")
+        ForeignKey("companies.id", ondelete="CASCADE")
     )
 
     company: Mapped["Company"] = relationship(back_populates="legal_entities")

@@ -10,12 +10,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.models.base import Base, TimestampMixin, UUIDPrimaryKeyMixin
 
 if TYPE_CHECKING:
-    from app.models.legal_entity import LegalEntity
     from app.models.catalog import Catalog
     from app.models.federation import Federation
+    from app.models.legal_entity import LegalEntity
     from app.models.project import Project, ProjectField
     from app.models.user import User
-
 
 
 class Company(UUIDPrimaryKeyMixin, TimestampMixin, Base):
@@ -114,6 +113,3 @@ class CompanyField(UUIDPrimaryKeyMixin, TimestampMixin, Base):
             if hasattr(self, "company")
             else self.name
         )
-
-
-
